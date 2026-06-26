@@ -15,7 +15,8 @@ import {
   Users,
   Megaphone,
   Palette,
-  Cloud
+  Cloud,
+  Github
 } from "lucide-react";
 import { UserStats } from "@/src/types";
 import { Logo } from "./Logo";
@@ -187,6 +188,7 @@ export function Layout({ children }: LayoutProps) {
     { href: "/cyber", label: "Cyber Security", icon: Shield },
     { href: "/vibe", label: "Become a Developer", icon: Sparkles },
     { href: "/deploy", label: "Deploy Apps", icon: Cloud },
+    { href: "/git-push", label: "Git Push", icon: Github },
     { href: "/gaming", label: "Gaming Zone", icon: Gamepad2 },
     { href: "/members", label: "Members", icon: Users },
     { href: "/announcements", label: "Broadcasts", icon: Megaphone },

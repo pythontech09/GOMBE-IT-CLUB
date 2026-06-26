@@ -11,6 +11,7 @@ import Announcements from "./pages/Announcements";
 import Account from "./pages/Account";
 import AiDev from "./pages/AiDev";
 import Deploy from "./pages/Deploy";
+import GitPush from "./pages/GitPush";
 import NotFound from "./pages/not-found";
 
 export default function App() {
@@ -26,6 +27,7 @@ export default function App() {
         <Route path="/announcements" component={Announcements} />
         <Route path="/ai-dev" component={AiDev} />
         <Route path="/deploy" component={Deploy} />
+        <Route path="/git-push" component={GitPush} />
         <Route path="/account" component={Account} />
         <Route component={NotFound} />
       </Switch>

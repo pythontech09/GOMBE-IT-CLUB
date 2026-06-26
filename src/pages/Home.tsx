@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "wouter";
-import { Laptop, Shield, Gamepad2, Sparkles, ArrowRight, BookOpen, Clock, Code, Search, X } from "lucide-react";
+import { Laptop, Shield, Gamepad2, Sparkles, ArrowRight, BookOpen, Clock, Code, Search, X, Github } from "lucide-react";
 import { Logo } from "../components/layout/Logo";
 
 export default function Home() {
@@ -12,6 +12,7 @@ export default function Home() {
     { label: "AI Senior Dev — Gemini Intelligent AI Teacher", path: "/ai-dev", category: "AI", tags: ["ai", "gemini", "model", "prompt", "chat", "teacher"] },
     { label: "Become a Developer — Fast Vibe Coding", path: "/vibe", category: "Coding", tags: ["vibe", "sandbox", "code", "live", "create", "prompt"] },
     { label: "Deploy Apps — Cloudflare Pages & CLI", path: "/deploy", category: "Deploy", tags: ["deploy", "host", "cloudflare", "pages", "wrangler", "upload"] },
+    { label: "Git Push Pipeline — Push ZIP to GitHub repo", path: "/git-push", category: "Git", tags: ["git", "push", "github", "secret", "token", "zip", "upload", "commit"] },
     { label: "Cyber Security — Ethical Hacking Terminal Labs", path: "/cyber", category: "Cyber", tags: ["hacking", "linux", "terminal", "wireshark", "security"] },
     { label: "Gaming Zone — FIFA & COD Mobile Tournaments", path: "/gaming", category: "Gaming", tags: ["gaming", "fifa", "cod", "mortal", "standings"] },
     { label: "Members Directory — Club Scoreboards", path: "/members", category: "Members", tags: ["members", "roster", "scholars", "leaders", "score"] },
@@ -263,6 +264,24 @@ export default function Home() {
             );
           })}
         </div>
+      </section>
+
+      {/* GitHub push pipeline callout */}
+      <section className="bg-gradient-to-r from-[#030712] to-slate-950 border border-slate-900 rounded-2xl p-6 md:p-8 flex flex-col md:flex-row gap-6 items-center justify-between relative overflow-hidden shadow-2xl">
+        <div className="absolute top-0 right-0 w-48 h-48 bg-cyan-500/5 blur-3xl rounded-full"></div>
+        <div className="space-y-2 text-center md:text-left">
+          <div className="inline-flex items-center gap-1.5 bg-slate-900 border border-slate-800 text-cyan-400 text-[10px] font-mono px-2 py-0.5 rounded font-bold uppercase tracking-wide">
+            🚀 Git Integration
+          </div>
+          <h3 className="text-lg font-bold text-white uppercase tracking-tight">Need to push your project to GitHub?</h3>
+          <p className="text-xs text-slate-400 max-w-xl leading-relaxed">
+            Zero command-line or terminal installation required! Drag and drop any zipped web project, type your repository pointer and personal secure token, and our automated pipeline will decompress it client-side and push the files directly to your live GitHub repository in seconds.
+          </p>
+        </div>
+        <Link href="/git-push" className="bg-slate-900 hover:bg-slate-800 border border-slate-800 text-white text-xs font-mono font-bold uppercase tracking-wider px-5 py-3 rounded-xl flex items-center gap-2 transition-all flex-shrink-0 cursor-pointer shadow-lg shadow-black/50">
+          <Github className="w-4 h-4 text-cyan-400" />
+          Deploy via Git Push
+        </Link>
       </section>
 
       {/* Info card banner for parents */}
