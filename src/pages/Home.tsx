@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "wouter";
 import { Laptop, Shield, Gamepad2, Sparkles, ArrowRight, BookOpen, Clock, Code } from "lucide-react";
+import { Logo } from "../components/layout/Logo";
 
 export default function Home() {
   const paths = [
@@ -55,9 +56,14 @@ export default function Home() {
           <Sparkles className="w-3.5 h-3.5" />
           Building the future of tech in Gombe
         </div>
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-sans font-extrabold tracking-tight text-white leading-tight">
-          GOMBE ICT CLUB
-        </h1>
+        <div className="flex flex-col items-center gap-4">
+          <div className="p-1.5 rounded-full bg-slate-900 border border-slate-800 shadow-2xl hover:scale-105 hover:border-slate-700 transition-all duration-350">
+            <Logo className="w-28 h-28" />
+          </div>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-sans font-extrabold tracking-tight text-white leading-tight">
+            GOMBE ICT CLUB
+          </h1>
+        </div>
         <p className="text-base md:text-lg text-slate-400 max-w-xl mx-auto leading-relaxed">
           Three departments. One community. Cultivating a beautiful generation of software developers and digital creators in Uganda.
         </p>

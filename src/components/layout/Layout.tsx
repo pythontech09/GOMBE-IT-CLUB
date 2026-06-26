@@ -17,6 +17,7 @@ import {
   Palette
 } from "lucide-react";
 import { UserStats } from "@/src/types";
+import { Logo } from "./Logo";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -211,13 +212,13 @@ export function Layout({ children }: LayoutProps) {
       {/* Main header block */}
       <header className={`sticky top-0 z-40 backdrop-blur-md border-b ${activeTheme.header} transition-colors duration-300`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2.5 hover:opacity-90 transition-opacity">
-            <div className="bg-gradient-to-tr from-cyan-600 to-indigo-600 p-2 rounded-lg text-white shadow-lg shadow-cyan-500/10">
-              <Laptop className="w-5 h-5" />
+          <Link href="/" className="flex items-center gap-2.5 hover:opacity-95 transition-all group/logo">
+            <div className="p-0.5 rounded-xl bg-slate-900 border border-slate-800 shadow-xl group-hover/logo:scale-105 transition-all">
+              <Logo className="w-11 h-11" />
             </div>
             <div>
-              <span className="text-base font-bold tracking-tight block">GOMBE SS ICT</span>
-              <span className="text-[10px] font-mono block tracking-wider uppercase opacity-80">Tech-it-Easy Portal</span>
+              <span className="text-base font-extrabold tracking-tight block text-white group-hover/logo:text-cyan-400 transition-colors">GOMBE SS ICT</span>
+              <span className="text-[9px] font-mono block tracking-wider uppercase opacity-75 font-bold text-slate-400">Tech-it-Easy Portal</span>
             </div>
           </Link>
 
