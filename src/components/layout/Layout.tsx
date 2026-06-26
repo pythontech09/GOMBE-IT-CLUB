@@ -14,7 +14,8 @@ import {
   Volume2,
   Users,
   Megaphone,
-  Palette
+  Palette,
+  Cloud
 } from "lucide-react";
 import { UserStats } from "@/src/types";
 import { Logo } from "./Logo";
@@ -93,6 +94,36 @@ export const THEMES = [
     cardClass: "bg-[#151809] border-[#2c300f]",
     footer: "bg-[#0c0e05] border-[#23270c] text-yellow-800/40",
     accent: "text-yellow-400",
+  },
+  {
+    id: "nebula",
+    name: "Cosmic Nebula 🌟",
+    classes: "bg-[#03001e] text-[#f1f5f9] selection:bg-purple-500 selection:text-white",
+    header: "bg-[#03001e]/90 border-purple-950/60 text-purple-100",
+    topBar: "bg-[#12002e] border-purple-950/45 text-purple-400",
+    cardClass: "bg-[#12002e]/60 border-[#2b0c54]/70 shadow-lg shadow-purple-950/20",
+    footer: "bg-[#03001e] border-purple-950/30 text-purple-700/60",
+    accent: "text-fuchsia-400",
+  },
+  {
+    id: "terminal",
+    name: "Matrix Terminal 📟",
+    classes: "bg-[#050806] text-[#4af626] selection:bg-[#4af626] selection:text-black font-mono",
+    header: "bg-[#050806]/95 border-[#1a3818] text-[#4af626]",
+    topBar: "bg-[#0b130c] border-[#1a3818] text-[#3cb71f]",
+    cardClass: "bg-[#070c08] border-[#1a3818]/65 shadow-md shadow-emerald-950/20",
+    footer: "bg-[#050806] border-[#1a3818]/45 text-[#3cb71f]/50",
+    accent: "text-[#4af626] font-bold drop-shadow-[0_0_6px_rgba(74,246,38,0.4)]",
+  },
+  {
+    id: "sahara",
+    name: "Sahara Sand 🏜️",
+    classes: "bg-[#0d0a07] text-[#fcfbfa] selection:bg-amber-400 selection:text-black",
+    header: "bg-[#17120c]/90 border-amber-950/60 text-amber-100",
+    topBar: "bg-[#241a10] border-amber-950/40 text-amber-500",
+    cardClass: "bg-[#1d150c] border-[#3a2815]/80 shadow-md",
+    footer: "bg-[#0d0a07] border-amber-950/30 text-amber-700/50",
+    accent: "text-amber-400",
   }
 ];
 
@@ -155,6 +186,7 @@ export function Layout({ children }: LayoutProps) {
     { href: "/ai-dev", label: "AI Senior Dev", icon: Sparkles, highlight: true },
     { href: "/cyber", label: "Cyber Security", icon: Shield },
     { href: "/vibe", label: "Become a Developer", icon: Sparkles },
+    { href: "/deploy", label: "Deploy Apps", icon: Cloud },
     { href: "/gaming", label: "Gaming Zone", icon: Gamepad2 },
     { href: "/members", label: "Members", icon: Users },
     { href: "/announcements", label: "Broadcasts", icon: Megaphone },
@@ -166,12 +198,8 @@ export function Layout({ children }: LayoutProps) {
       {/* Top micro status information bar */}
       <div className={`${activeTheme.topBar} border-b text-[11px] font-mono py-1 px-4 flex justify-between items-center transition-colors duration-300`}>
         <div className="flex items-center gap-3">
-          <span className="flex items-center gap-1">
-            <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse inline-block"></span>
-            GOMBE SS PORTAL LIVE
-          </span>
-          <span className="hidden md:inline text-slate-600">|</span>
-          <span className="hidden md:inline">UGANDA ED-TECH PORTAL</span>
+          {/* Gombe Portal Title instead of raw live banners */}
+          <span className="text-xs font-bold tracking-wider text-cyan-500">GOMBE ICT CLUB HUB</span>
         </div>
         
         <div className="flex items-center gap-4">
@@ -292,6 +320,12 @@ export function Layout({ children }: LayoutProps) {
 
       {/* Footer copyright block */}
       <footer className={`${activeTheme.footer} border-t py-8 text-center text-xs font-mono transition-colors duration-300`}>
+        <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-[11px] text-slate-400 font-sans font-bold max-w-2xl mx-auto border-b border-slate-900/60 pb-4 mb-4">
+          <span className="text-slate-500 font-mono">Lead Dev:</span>
+          <a href="mailto:hpro453176@gmail.com" className="hover:text-cyan-400 transition-colors">✉️ hpro453176@gmail.com</a>
+          <a href="tel:+256752453176" className="hover:text-emerald-400 transition-colors">📞 +256 752 453176</a>
+          <a href="https://wa.me/256752453176" target="_blank" rel="noopener noreferrer" className="hover:text-green-400 transition-colors">💬 WhatsApp: +256 752 453176</a>
+        </div>
         <p className="mb-2">Gombe Senior Secondary School ICT Club • Uganda</p>
         <p className="text-[10px] opacity-75">
           Empowered by Gemini AI Teacher Studio • © {new Date().getFullYear()} Gombe SS. Build the future with tech!

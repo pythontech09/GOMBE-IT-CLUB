@@ -1,9 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "wouter";
-import { Laptop, Shield, Gamepad2, Sparkles, ArrowRight, BookOpen, Clock, Code } from "lucide-react";
+import { Laptop, Shield, Gamepad2, Sparkles, ArrowRight, BookOpen, Clock, Code, Search, X } from "lucide-react";
 import { Logo } from "../components/layout/Logo";
 
 export default function Home() {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [showSuggestions, setShowSuggestions] = useState(false);
+
+  const searchIndex = [
+    { label: "Coding Hub — Web Dev, React & Python Courses", path: "/coding", category: "Coding", tags: ["react", "python", "javascript", "html", "css", "quiz", "lessons"] },
+    { label: "AI Senior Dev — Gemini Intelligent AI Teacher", path: "/ai-dev", category: "AI", tags: ["ai", "gemini", "model", "prompt", "chat", "teacher"] },
+    { label: "Become a Developer — Fast Vibe Coding", path: "/vibe", category: "Coding", tags: ["vibe", "sandbox", "code", "live", "create", "prompt"] },
+    { label: "Deploy Apps — Cloudflare Pages & CLI", path: "/deploy", category: "Deploy", tags: ["deploy", "host", "cloudflare", "pages", "wrangler", "upload"] },
+    { label: "Cyber Security — Ethical Hacking Terminal Labs", path: "/cyber", category: "Cyber", tags: ["hacking", "linux", "terminal", "wireshark", "security"] },
+    { label: "Gaming Zone — FIFA & COD Mobile Tournaments", path: "/gaming", category: "Gaming", tags: ["gaming", "fifa", "cod", "mortal", "standings"] },
+    { label: "Members Directory — Club Scoreboards", path: "/members", category: "Members", tags: ["members", "roster", "scholars", "leaders", "score"] },
+    { label: "Broadcasts & Bulletins — Club Announcements", path: "/announcements", category: "News", tags: ["announcements", "bulletin", "broadcast", "updates"] },
+    { label: "My Profile — Connect GitHub & Google Auth", path: "/account", category: "Account", tags: ["profile", "sso", "login", "register", "github", "google", "instagram"] },
+    { label: "Developer Contacts — Support Helpdesk", path: "/deploy", category: "Help", tags: ["contact", "email", "whatsapp", "phone", "support", "hpro"] },
+  ];
+
+  const filteredSuggestions = searchQuery.trim() === "" 
+    ? [] 
+    : searchIndex.filter(item => 
+        item.label.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
+      );
+
   const paths = [
     {
       href: "/coding",
@@ -67,7 +91,97 @@ export default function Home() {
         <p className="text-base md:text-lg text-slate-400 max-w-xl mx-auto leading-relaxed">
           Three departments. One community. Cultivating a beautiful generation of software developers and digital creators in Uganda.
         </p>
-        <div className="flex justify-center gap-3 pt-4">
+
+        {/* Fancy Interactive Search Bar */}
+        <div className="max-w-md mx-auto relative pt-2 z-20">
+          <div className="relative">
+            <div className="absolute left-3.5 top-3 text-slate-500">
+              <Search className="w-4.5 h-4.5 animate-pulse" />
+            </div>
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+                setShowSuggestions(true);
+              }}
+              onFocus={() => setShowSuggestions(true)}
+              placeholder="Search subjects, labs, or tools... (e.g., 'deploy')"
+              className="w-full bg-slate-950/90 text-xs text-white pl-10 pr-10 py-3 rounded-xl border border-slate-850 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all placeholder:text-slate-600 font-sans shadow-lg shadow-black/40"
+            />
+            {searchQuery && (
+              <button
+                onClick={() => {
+                  setSearchQuery("");
+                  setShowSuggestions(false);
+                }}
+                className="absolute right-3.5 top-3.5 text-slate-500 hover:text-slate-300 transition-colors"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            )}
+          </div>
+
+          {/* Search Suggestions Dropdown */}
+          {showSuggestions && filteredSuggestions.length > 0 && (
+            <div className="absolute left-0 right-0 mt-2 bg-slate-900 border border-slate-850 rounded-xl shadow-2xl p-2 space-y-1 z-30 max-h-64 overflow-y-auto backdrop-blur-md animate-fade-in text-left">
+              <div className="text-[9px] font-mono font-bold uppercase tracking-wider text-slate-500 px-3 py-1 border-b border-slate-850 mb-1">
+                Matching Gombe ICT Hub items:
+              </div>
+              {filteredSuggestions.map((item, idx) => (
+                <Link
+                  key={idx}
+                  href={item.path}
+                  onClick={() => {
+                    setSearchQuery("");
+                    setShowSuggestions(false);
+                  }}
+                  className="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-slate-950 border border-transparent hover:border-slate-850 transition-all group/item"
+                >
+                  <div className="flex flex-col">
+                    <span className="text-xs text-slate-200 group-hover/item:text-cyan-400 font-sans transition-colors font-semibold">
+                      {item.label}
+                    </span>
+                    <span className="text-[9px] text-slate-500 font-mono italic">
+                      Tags: {item.tags.slice(0, 4).join(", ")}
+                    </span>
+                  </div>
+                  <span className="text-[9px] font-mono uppercase bg-slate-950 px-1.5 py-0.5 rounded text-slate-400 group-hover/item:text-cyan-400 border border-slate-850">
+                    {item.category}
+                  </span>
+                </Link>
+              ))}
+            </div>
+          )}
+
+          {/* Quick Tags */}
+          <div className="flex flex-wrap items-center justify-center gap-1.5 pt-3 text-[10px] font-mono text-slate-500">
+            <span className="font-bold select-none text-slate-600">Quick tags:</span>
+            <button 
+              type="button"
+              onClick={() => { setSearchQuery("deploy"); setShowSuggestions(true); }}
+              className="px-2 py-0.5 rounded bg-slate-950 border border-slate-850 hover:border-cyan-500 hover:text-cyan-400 transition-colors cursor-pointer"
+            >
+              deploy
+            </button>
+            <button 
+              type="button"
+              onClick={() => { setSearchQuery("vibe"); setShowSuggestions(true); }}
+              className="px-2 py-0.5 rounded bg-slate-950 border border-slate-850 hover:border-cyan-500 hover:text-cyan-400 transition-colors cursor-pointer"
+            >
+              vibe coding
+            </button>
+            <button 
+              type="button"
+              onClick={() => { setSearchQuery("hacking"); setShowSuggestions(true); }}
+              className="px-2 py-0.5 rounded bg-slate-950 border border-slate-850 hover:border-cyan-500 hover:text-cyan-400 transition-colors cursor-pointer"
+            >
+              ethical hacking
+            </button>
+          </div>
+        </div>
+
+        <div className="flex justify-center gap-3 pt-2">
           <Link href="/coding" className="bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-semibold tracking-wide px-5 py-2.5 rounded-lg transition-all shadow-lg shadow-cyan-950/50">
             Start Learning Now
           </Link>

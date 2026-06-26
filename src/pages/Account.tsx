@@ -13,7 +13,12 @@ import {
   Key,
   UserCheck,
   UserMinus,
-  AlertCircle
+  AlertCircle,
+  Github,
+  Instagram,
+  Globe,
+  X,
+  RefreshCw
 } from "lucide-react";
 import { 
   getUsers, 
@@ -40,6 +45,10 @@ export default function Account() {
   const [currentUser, setCurrentUser] = useState<PortalUser | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [allUsers, setAllUsers] = useState<PortalUser[]>([]);
+
+  // Social Sign-In State
+  const [activeOauthProvider, setActiveOauthProvider] = useState<"google" | "github" | "instagram" | null>(null);
+  const [oauthLoading, setOauthLoading] = useState(false);
 
   // Announcement states
   const [bulletinTitle, setBulletinTitle] = useState("");
@@ -193,6 +202,80 @@ export default function Account() {
       setErrorMsg(res.message);
     }
     setAllUsers(getUsers());
+  };
+
+  const handleSocialLoginConfirm = () => {
+    if (!activeOauthProvider) return;
+    setOauthLoading(true);
+
+    // Prepare credentials based on selected provider
+    let sName = "";
+    let sEmail = "";
+    let sTrack = "React & Python Core";
+
+    if (activeOauthProvider === "google") {
+      sName = "Faula Ssentuuwa";
+      sEmail = "faulatssentuuwa@gmail.com";
+      sTrack = "React & Python Core";
+    } else if (activeOauthProvider === "github") {
+      sName = "Gombe GitHub Scholar";
+      sEmail = "scholar.github@gombe-ict.edu.ng";
+      sTrack = "Cyber Security Operations";
+    } else {
+      sName = "Gombe Insta Creator";
+      sEmail = "insta.digital@gombe-ict.edu.ng";
+      sTrack = "Gaming & Digital Arts";
+    }
+
+    setTimeout(() => {
+      // 1. Check if user already exists
+      const usersList = getUsers();
+      const existing = usersList.find(u => u.email.toLowerCase().trim() === sEmail.toLowerCase().trim());
+      
+      let finalUser: PortalUser;
+      if (!existing) {
+        finalUser = {
+          name: sName,
+          email: sEmail,
+          role: "Student",
+          track: sTrack,
+          level: "Beginner",
+          points: 150, // bonus for social OAuth sign up
+          streak: 4,
+          desc: `Verified Gombe SS Scholar via ${activeOauthProvider.toUpperCase()} Single Sign-on integration.`
+        };
+        saveUsers([...usersList, finalUser]);
+      } else {
+        finalUser = existing;
+      }
+
+      // 2. Set current session
+      localStorage.setItem("gombe_ss_current_user", finalUser.email);
+      setCurrentUser(finalUser);
+      setIsLoggedIn(true);
+
+      // Harmonize stats
+      const savedStats = localStorage.getItem("gombe_ss_stats");
+      let completedTopics: string[] = [];
+      if (savedStats) {
+        try {
+          completedTopics = JSON.parse(savedStats).completedTopics || [];
+        } catch {}
+      }
+      const updatedStats = {
+        points: finalUser.points,
+        streak: finalUser.streak,
+        unlockedLevel: finalUser.level.toLowerCase() === "intermediate" ? "intermediate" : finalUser.level.toLowerCase() === "pro" ? "pro" : "beginner",
+        completedTopics
+      };
+      setUserStats(updatedStats);
+      localStorage.setItem("gombe_ss_stats", JSON.stringify(updatedStats));
+
+      setOauthLoading(false);
+      setActiveOauthProvider(null);
+      setSuccessMsg(`Single Sign-On authentication via ${activeOauthProvider.toUpperCase()} completed successfully! Welcome, ${finalUser.name}.`);
+      setAllUsers(getUsers());
+    }, 1500);
   };
 
   const handleLogout = () => {
@@ -441,6 +524,86 @@ export default function Account() {
 
   return (
     <div className="space-y-10 animate-fade-in font-sans">
+      {/* Simulated Social OAuth Consent Dialog */}
+      {activeOauthProvider && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-fade-in">
+          <div className="w-full max-w-md bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-6 shadow-2xl relative overflow-hidden text-slate-100 font-sans">
+            <div className={`absolute top-0 left-0 right-0 h-1.5 ${
+              activeOauthProvider === "google" ? "bg-red-500" :
+              activeOauthProvider === "github" ? "bg-slate-400" : "bg-fuchsia-500"
+            }`}></div>
+            
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                {activeOauthProvider === "google" && <Globe className="w-5 h-5 text-red-500" />}
+                {activeOauthProvider === "github" && <Github className="w-5 h-5 text-slate-200" />}
+                {activeOauthProvider === "instagram" && <Instagram className="w-5 h-5 text-fuchsia-500" />}
+                <span className="text-xs font-bold tracking-wider text-white font-mono uppercase">
+                  {activeOauthProvider.toUpperCase()} Single Sign-On
+                </span>
+              </div>
+              <button 
+                type="button"
+                onClick={() => setActiveOauthProvider(null)}
+                className="text-slate-500 hover:text-white transition-colors"
+                disabled={oauthLoading}
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="space-y-4 text-center py-2">
+              <div className="w-16 h-16 rounded-full mx-auto bg-slate-950 border border-slate-850 flex items-center justify-center text-white">
+                {activeOauthProvider === "google" && <Globe className="w-8 h-8 text-red-500 animate-pulse" />}
+                {activeOauthProvider === "github" && <Github className="w-8 h-8 text-slate-200 animate-pulse" />}
+                {activeOauthProvider === "instagram" && <Instagram className="w-8 h-8 text-fuchsia-500 animate-pulse" />}
+              </div>
+              <div className="space-y-1.5">
+                <h4 className="text-sm font-extrabold text-white uppercase font-mono">Authorize Gombe SS ICT Portal</h4>
+                <p className="text-xs text-slate-400 leading-relaxed max-w-xs mx-auto">
+                  {activeOauthProvider === "google" && "Simulating Google SSO connection with account: faulatssentuuwa@gmail.com. Gombe ICT Club will retrieve your authenticated email to match learning streaks."}
+                  {activeOauthProvider === "github" && "Simulating GitHub OAuth handshakes. Authenticates access to public repository structures and awards +150 bonus points."}
+                  {activeOauthProvider === "instagram" && "Connects your Gombe SS digital credentials to Instagram. Simplifies sharing of gaming tournament scores."}
+                </p>
+              </div>
+            </div>
+
+            <div className="space-y-2 pt-2">
+              <button
+                type="button"
+                disabled={oauthLoading}
+                onClick={handleSocialLoginConfirm}
+                className={`w-full py-2.5 rounded-xl text-xs font-mono font-bold uppercase tracking-wider text-white flex items-center justify-center gap-2 cursor-pointer shadow-lg transition-all ${
+                  activeOauthProvider === "google" ? "bg-red-600 hover:bg-red-500 shadow-red-950" :
+                  activeOauthProvider === "github" ? "bg-slate-700 hover:bg-slate-600 shadow-slate-950" :
+                  "bg-gradient-to-r from-purple-600 to-pink-600 hover:opacity-95 shadow-pink-950"
+                }`}
+              >
+                {oauthLoading ? (
+                  <>
+                    <RefreshCw className="w-4 h-4 animate-spin" />
+                    Completing secure handshake...
+                  </>
+                ) : (
+                  <>
+                    <CheckCircle className="w-4 h-4" />
+                    Accept & Authenticate
+                  </>
+                )}
+              </button>
+              <button
+                type="button"
+                disabled={oauthLoading}
+                onClick={() => setActiveOauthProvider(null)}
+                className="w-full bg-slate-950 hover:bg-slate-900 text-slate-400 hover:text-slate-200 py-2 rounded-xl text-xs font-mono font-bold uppercase transition-all border border-slate-850"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <section className="bg-gradient-to-r from-indigo-950/40 to-slate-900/40 border border-slate-900 rounded-2xl p-6 md:p-8 flex flex-col md:flex-row gap-6 justify-between items-center">
         <div className="space-y-2 max-w-xl text-center md:text-left">
           <div className="inline-flex items-center gap-1.5 bg-indigo-950/80 border border-indigo-800/40 text-indigo-400 text-[10px] font-mono px-2.5 py-0.5 rounded uppercase font-bold">
@@ -546,6 +709,44 @@ export default function Account() {
                   >
                     Authenticate Account
                   </button>
+
+                  <div className="relative flex py-2 items-center">
+                    <div className="flex-grow border-t border-slate-850"></div>
+                    <span className="flex-shrink mx-3 text-[9px] font-mono text-slate-500 uppercase tracking-widest font-bold">Or Single Sign On</span>
+                    <div className="flex-grow border-t border-slate-850"></div>
+                  </div>
+
+                  <div className="grid grid-cols-3 gap-2 font-mono text-[10px]">
+                    {/* Google */}
+                    <button
+                      type="button"
+                      onClick={() => setActiveOauthProvider("google")}
+                      className="flex flex-col items-center gap-1 py-2 px-1 bg-slate-955 border border-slate-850 hover:border-red-500/50 hover:bg-red-950/10 rounded-xl transition-all text-slate-400 hover:text-white font-bold group cursor-pointer"
+                    >
+                      <Globe className="w-4 h-4 text-red-500 group-hover:scale-110 transition-transform" />
+                      <span>Google</span>
+                    </button>
+
+                    {/* GitHub */}
+                    <button
+                      type="button"
+                      onClick={() => setActiveOauthProvider("github")}
+                      className="flex flex-col items-center gap-1 py-2 px-1 bg-slate-955 border border-slate-850 hover:border-slate-500 hover:bg-slate-900 rounded-xl transition-all text-slate-400 hover:text-white font-bold group cursor-pointer"
+                    >
+                      <Github className="w-4 h-4 text-slate-200 group-hover:scale-110 transition-transform" />
+                      <span>GitHub</span>
+                    </button>
+
+                    {/* Instagram */}
+                    <button
+                      type="button"
+                      onClick={() => setActiveOauthProvider("instagram")}
+                      className="flex flex-col items-center gap-1 py-2 px-1 bg-slate-955 border border-slate-850 hover:border-fuchsia-500/50 hover:bg-fuchsia-950/10 rounded-xl transition-all text-slate-400 hover:text-white font-bold group cursor-pointer"
+                    >
+                      <Instagram className="w-4 h-4 text-fuchsia-500 group-hover:scale-110 transition-transform" />
+                      <span>Instagram</span>
+                    </button>
+                  </div>
                 </form>
               ) : (
                 <form onSubmit={handleRegisterSubmit} className="space-y-4">
