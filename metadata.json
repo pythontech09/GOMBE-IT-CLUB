@@ -1,0 +1,6 @@
+{
+  "name": "Gombe SS ICT Club",
+  "description": "A comprehensive digital educational portal for Gombe State Secondary Schools' ICT Club, featuring Coding, Cyber Security, Gaming tournaments, Quizzes, and Admin controls.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
